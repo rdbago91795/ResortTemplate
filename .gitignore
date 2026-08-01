@@ -1,0 +1,35 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build output
+dist/
+build/
+*.tsbuildinfo
+
+# Environment — never commit. Only .env.example is tracked.
+.env
+.env.*
+!.env.example
+
+# Supabase local stack
+supabase/.branches/
+supabase/.temp/
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# Editor / OS
+.DS_Store
+Thumbs.db
+*.swp
+*.tmp
+.vscode/
+.idea/
+
+# Test output
+coverage/
+playwright-report/
+test-results/

@@ -1,0 +1,10 @@
+# pnpm 11 reads settings from here rather than package.json's "pnpm" field.
+#
+# pnpm blocks postinstall scripts by default — a sensible supply-chain default, since an
+# install script runs arbitrary code at install time. Each entry below is an explicit
+# exception, not a blanket allowance.
+#
+#   esbuild — links its platform-native binary. A transitive dependency of Vite, approved
+#             at the T002 gate. Vite cannot build without it.
+allowBuilds:
+  esbuild: true
