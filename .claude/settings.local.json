@@ -87,7 +87,8 @@
       "Bash(node server.js)",
       "Bash(kill %1)",
       "Bash(pkill -f \"csp-probe/server.js\")",
-      "Bash(rm -f src/__css-eval-check.ts)"
+      "Bash(rm -f src/__css-eval-check.ts)",
+      "Bash(mkdir -p src/assets/fonts)"
     ]
   }
 }
