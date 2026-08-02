@@ -80,7 +80,14 @@
       "Bash(gh auth *)",
       "Bash(gh pr *)",
       "Bash(git config *)",
-      "Bash(git checkout *)"
+      "Bash(git checkout *)",
+      "Bash(git commit *)",
+      "Bash(git push *)",
+      "PowerShell(winget install --id GitHub.cli --accept-source-agreements --accept-package-agreements --silent 2>&1)",
+      "Bash(node server.js)",
+      "Bash(kill %1)",
+      "Bash(pkill -f \"csp-probe/server.js\")",
+      "Bash(rm -f src/__css-eval-check.ts)"
     ]
   }
 }

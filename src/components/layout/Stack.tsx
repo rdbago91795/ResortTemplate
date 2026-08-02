@@ -19,10 +19,14 @@ export type StackProps = HTMLAttributes<HTMLElement> & {
  * `undefined` that silently collapses to no gap. That is the whole argument for the typed
  * contract (Principle V), applied to a prop instead of a stylesheet.
  *
- * The gap goes through the `style` attribute, which is fine: it is a var() reference, not a
- * secret, and the CSP concern in Principle IX is about `assignInlineVars` emitting a style
- * attribute the `style-src` policy blocks. A plain inline `gap` is not affected — but see
- * src/brand/applyBranding.ts for the case where it is.
+ * The gap goes through React's `style` prop, which survives `style-src 'self'`. Verified
+ * rather than assumed: react-dom 19.2.8 applies it with `node.style.setProperty(...)` and
+ * never `setAttribute("style", …)`, and CSP does not govern CSSOM mutation.
+ *
+ * An earlier version of this comment justified that by saying the CSP concern was specific to
+ * `assignInlineVars`. That was wrong — both go through the identical React path, so it could
+ * never have been true of one and not the other. The real distinction is SSR, and it is
+ * written up in src/brand/applyBranding.ts.
  */
 export function Stack({
   gap = 'md',

@@ -23,20 +23,27 @@ export type Branding = {
  * `setElementVars`, NEVER `assignInlineVars` — constitution IX, design-system §3.4.
  * ══════════════════════════════════════════════════════════════════════════════════
  *
- * The two look interchangeable and are not:
+ * ⚠ CORRECTED after verification (2026-08-01). This comment previously claimed that
+ * `assignInlineVars` "renders as a `style="..."` ATTRIBUTE" which `style-src 'self'` blocks.
+ * That is FALSE for this app, and the correction matters because the false version would
+ * teach the next person the wrong model of CSP:
  *
- *   `assignInlineVars` returns an object destined for React's `style` prop, which renders as
- *   a `style="..."` ATTRIBUTE. A `style-src 'self'` policy with no `'unsafe-inline'` blocks
- *   style attributes, so every brand variable silently resolves to nothing. The failure looks
- *   like "the colours are wrong" rather than "the CSP blocked something", and it does not
- *   reproduce in dev where the CSP header is usually absent.
+ *   React applies the `style` prop with `node.style.setProperty(...)`. Checked directly
+ *   against react-dom 19.2.8 — it never calls `setAttribute("style", …)`. That is the CSSOM,
+ *   and CSP does not govern CSSOM mutation. So under the client-only render this app does
+ *   (`createRoot`, no SSR), `assignInlineVars` would work, as does every `style={{…}}`
+ *   elsewhere in `src/`.
  *
- *   `setElementVars` sets the same custom properties through the CSSOM
- *   (`element.style.setProperty`), which is a script action, not a parsed style attribute.
- *   `style-src` does not apply. Same result, and it survives the policy.
+ * The preference for `setElementVars` is still right, on two narrower grounds:
  *
- * `eslint.config.js` bans the `assignInlineVars` import repo-wide, because this is exactly the
- * kind of substitution that looks harmless in review.
+ *   1. IT BREAKS UNDER SSR. Server-rendered markup carries a genuine style attribute, which
+ *      `style-src 'self'` does block — silently, and only in production. If this app ever
+ *      gains SSR, `assignInlineVars` is the thing that fails first and most confusingly.
+ *   2. BRANDING IS NOT REACT'S TO OWN. These variables go on `:root`, once, imperatively.
+ *      `setElementVars` says exactly that; `assignInlineVars` would mean threading a style
+ *      object down to an element outside the React tree.
+ *
+ * `eslint.config.js` keeps the ban, with the corrected reasoning.
  *
  * ── Why these values are not tokens ──────────────────────────────────────────
  *

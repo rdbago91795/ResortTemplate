@@ -318,8 +318,18 @@ async function main(): Promise<void> {
   // Goes into payment-assets, which is PRIVATE and has no read policy for any role. Even
   // seeded, it is not reachable by URL — a guest sees it only through a signed URL issued
   // after their booking is confirmed (C8).
+  // ⚠ The try wraps ONLY the read. It used to wrap the upload and the settings write too,
+  // which meant a rejected upload — wrong MIME, over the 2 MB bucket limit, network failure —
+  // was reported to the operator as "file not found in demo-assets/". Those need different
+  // actions: one is "you haven't supplied it yet", the other is "your file was refused".
+  let qr: Buffer | null = null;
   try {
-    const qr = await readFile(join(IMAGE_DIR, 'payment-qr-placeholder.png'));
+    qr = await readFile(join(IMAGE_DIR, 'payment-qr-placeholder.png'));
+  } catch {
+    missing.push('payment-qr-placeholder.png');
+  }
+
+  if (qr) {
     const { error } = await db.storage
       .from('payment-assets')
       .upload('demo/payment-qr-placeholder.png', qr, {
@@ -327,13 +337,14 @@ async function main(): Promise<void> {
         upsert: true,
       });
     fail('upload payment QR', error);
-    await db
+
+    const { error: settingsError } = await db
       .from('site_settings')
       .update({ payment_qr_path: 'demo/payment-qr-placeholder.png' })
       .eq('id', true);
+    fail('point site_settings at the payment QR', settingsError);
+
     console.log('  ✓ placeholder payment QR uploaded to payment-assets (private)');
-  } catch {
-    missing.push('payment-qr-placeholder.png');
   }
 
   if (uploaded > 0) console.log(`  ✓ ${uploaded} images uploaded to ${DEMO_STORAGE_BUCKET}`);

@@ -228,7 +228,10 @@ export const choiceLabel = style({
  */
 export const switchTrack = style({
   position: 'relative',
-  width: '44px',
+  // The track is exactly one touch target wide. `size.touchTarget` is the token for that,
+  // so the literal 44px this used to carry was a duplicate of a value already in the
+  // contract — the one Principle V case where the token was sitting right there.
+  width: vars.size.touchTarget,
   height: vars.space.xl,
   borderRadius: vars.radius.pill,
   backgroundColor: vars.color.border.strong,
@@ -256,7 +259,12 @@ export const switchKnob = style({
   transitionTimingFunction: vars.easing.standard,
   transform: 'translateX(0)',
   selectors: {
-    '[aria-checked="true"] > &': { transform: 'translateX(20px)' },
+    // Travel = track width − knob − both paddings = touchTarget(44) − lg(16) − 2×xxs(2) = 24.
+    // Written as a calc over the same tokens so the knob follows if either changes, instead
+    // of silently overshooting the track.
+    '[aria-checked="true"] > &': {
+      transform: `translateX(calc(${vars.size.touchTarget} - ${vars.space.lg} - ${vars.space.xxs} - ${vars.space.xxs}))`,
+    },
   },
 });
 
