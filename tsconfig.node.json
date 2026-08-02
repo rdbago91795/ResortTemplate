@@ -1,0 +1,18 @@
+{
+  // Node-side TypeScript: the seed scripts, the verification suites, and the vitest config.
+  //
+  // Separate from tsconfig.json because these run in Node, not the browser — they need
+  // `@types/node` and must NOT get the DOM lib, which is what would let a `document`
+  // reference in a seed script typecheck cleanly and then crash at run time.
+  //
+  // Added when the suites arrived (T064–T067). Before this, `supabase/seed/*.ts` sat outside
+  // `include: ["src"]` and was never typechecked at all.
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "lib": ["ES2023"],
+    "types": ["node"],
+    "jsx": "preserve",
+    "noEmit": true
+  },
+  "include": ["tests", "supabase/seed", "vitest.config.ts"]
+}

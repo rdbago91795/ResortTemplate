@@ -47,7 +47,7 @@ globalStyle('h1, h2, h3, h4, h5, h6', {
  */
 globalStyle(':focus-visible', {
   outline: `1px solid ${vars.color.border.focus}`,
-  outlineOffset: '2px',
+  outlineOffset: vars.space.xxs,
   boxShadow: vars.shadow.focus,
 });
 

@@ -46,9 +46,9 @@ export const band = style({
   display: 'grid',
   gridTemplateColumns: 'repeat(12, 1fr)',
   gap: vars.space.xxs,
-  height: '8px',
+  height: vars.space.sm,
   '@media': {
-    [media.md]: { height: '12px' },
+    [media.md]: { height: vars.space.md },
   },
 });
 

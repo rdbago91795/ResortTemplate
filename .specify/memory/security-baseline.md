@@ -477,6 +477,22 @@ where n.nspname = 'public' and c.relkind = 'v'
 "RLS enabled but zero policies" is on the list because it is a silent full-deny that presents as a
 mysteriously empty page — a bug, not a breach, but one that costs an afternoon every time.
 
+**Amended after T067 was implemented (2026-08-01).** Four tables are in that state *deliberately*
+and must be excluded: `admin_users`, `personal_data_stores`, `rate_limit_events`, `webhook_events`.
+All four are RLS-P4 server-only, reached exclusively through `security definer` functions; giving
+any of them a client policy would widen access rather than fix anything. The allowlist lives in
+`tests/rls/schema-audit.test.ts` with a reason per entry, plus a second assertion that fails if an
+allowlisted table ever stops being deny-all — so the exception cannot rot into a blind spot. Any
+other table in that state is still a finding.
+
+**Also amended: what an anon read of a protected table returns.** T065 originally asked for "zero
+rows rather than an error", on the reasoning that an error confirms the table exists. That assumes
+one gate. Because grants are revoked per the rule above, the request is refused at the privilege
+layer with `42501` before RLS is consulted. Making the original assertion true would mean granting
+`select` back to `anon` and relying on RLS alone — trading the table gate for a slightly quieter
+error. The test now asserts the guarantee that actually matters: **no rows reach anon, by either
+gate**, and it fails if the grant is ever restored.
+
 ---
 
 ## 2. Auth hardening

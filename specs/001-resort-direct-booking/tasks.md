@@ -86,92 +86,92 @@ can begin until this is done.**
 
 ### Schema â€” extensions and helpers
 
-- [ ] T016 **[GATE]** Present the SQL enabling `btree_gist`, `pg_cron`, `citext`, and `pgcrypto` â€” wait for approval before applying
-- [ ] T017 Create migration `supabase/migrations/0001_extensions.sql` enabling the four extensions
-- [ ] T018 Create `supabase/migrations/0002_admin_users.sql` â€” `admin_users` with `user_id`, `role`, `created_at`. **No `disabled_at` column** (FR-069g: a field that can brick a deployment must not exist)
-- [ ] T019 Create `supabase/migrations/0003_helpers.sql` with `public.is_admin()` and `public.has_role(text[])` â€” both `security definer` with `set search_path = ''`, execute granted to `authenticated` only
+- [X] T016 **[GATE]** Present the SQL enabling `btree_gist`, `pg_cron`, `citext`, and `pgcrypto` â€” wait for approval before applying
+- [X] T017 Create migration `supabase/migrations/0001_extensions.sql` enabling the four extensions
+- [X] T018 Create `supabase/migrations/0002_admin_users.sql` â€” `admin_users` with `user_id`, `role`, `created_at`. **No `disabled_at` column** (FR-069g: a field that can brick a deployment must not exist)
+- [X] T019 Create `supabase/migrations/0003_helpers.sql` with `public.is_admin()` and `public.has_role(text[])` â€” both `security definer` with `set search_path = ''`, execute granted to `authenticated` only
 
 ### Schema â€” settings and branding
 
-- [ ] T020 Create `supabase/migrations/0004_site_settings.sql` â€” singleton with `check (id)`, including `timezone`, `hold_minutes`, `awaiting_hours`, `min_notice_hours`, `same_day_cutoff_hour`, `session_idle_minutes`, `booking_retention_months`, `enquiry_retention_months`, `scarcity_threshold`, `hero_treatment`, `rate_limits`
-- [ ] T021 Create `supabase/migrations/0005_site_branding.sql` â€” singleton with two owner-set hex columns and ten derived columns, plus logo and OG paths
+- [X] T020 Create `supabase/migrations/0004_site_settings.sql` â€” singleton with `check (id)`, including `timezone`, `hold_minutes`, `awaiting_hours`, `min_notice_hours`, `same_day_cutoff_hour`, `session_idle_minutes`, `booking_retention_months`, `enquiry_retention_months`, `scarcity_threshold`, `hero_treatment`, `rate_limits`
+- [X] T021 Create `supabase/migrations/0005_site_branding.sql` â€” singleton with two owner-set hex columns and ten derived columns, plus logo and OG paths
 
 ### Schema â€” inventory
 
-- [ ] T022 Create `supabase/migrations/0006_room_types.sql` with `published_at`, `archived_at`, `sort_order`, `updated_at`
-- [ ] T023 Create `supabase/migrations/0007_room_units.sql` referencing `room_types`
-- [ ] T024 Create `supabase/migrations/0008_rate_overrides.sql` with a generated `date_range` and **`exclude using gist (room_type_id with =, date_range with &&)`** (FR-029b)
+- [X] T022 Create `supabase/migrations/0006_room_types.sql` with `published_at`, `archived_at`, `sort_order`, `updated_at`
+- [X] T023 Create `supabase/migrations/0007_room_units.sql` referencing `room_types`
+- [X] T024 Create `supabase/migrations/0008_rate_overrides.sql` with a generated `date_range` and **`exclude using gist (room_type_id with =, date_range with &&)`** (FR-029b)
 
 ### Schema â€” the occupancy guarantee
 
-- [ ] T025 Create `supabase/migrations/0009_bookings.sql` â€” all columns from data-model.md, including `origin`, `stay_total`, `erased_at`, `updated_at`
-- [ ] T026 Create `supabase/migrations/0010_availability_blocks.sql` with `date_range` and `updated_at`
-- [ ] T027 **Create `supabase/migrations/0011_room_occupancy.sql`** with the source check and **`exclude using gist (room_unit_id with =, stay_range with &&)`**. This single constraint discharges FR-004, FR-037, FR-037a, and SC-001 across all four writers
-- [ ] T028 Create `supabase/migrations/0012_booking_events.sql` with `actor_id` nullable (null means the system, FR-022h) and the **check constraint rejecting personal keys** in both JSONB columns (FR-022g)
-- [ ] T029 [P] Create `supabase/migrations/0013_email_deliveries.sql` with `provider_message_id` unique and `recipient`
+- [X] T025 Create `supabase/migrations/0009_bookings.sql` â€” all columns from data-model.md, including `origin`, `stay_total`, `erased_at`, `updated_at`
+- [X] T026 Create `supabase/migrations/0010_availability_blocks.sql` with `date_range` and `updated_at`
+- [X] T027 **Create `supabase/migrations/0011_room_occupancy.sql`** with the source check and **`exclude using gist (room_unit_id with =, stay_range with &&)`**. This single constraint discharges FR-004, FR-037, FR-037a, and SC-001 across all four writers
+- [X] T028 Create `supabase/migrations/0012_booking_events.sql` with `actor_id` nullable (null means the system, FR-022h) and the **check constraint rejecting personal keys** in both JSONB columns (FR-022g)
+- [X] T029 [P] Create `supabase/migrations/0013_email_deliveries.sql` with `provider_message_id` unique and `recipient`
 
 ### Schema â€” content and guest-facing
 
-- [ ] T030 [P] Create `supabase/migrations/0014_enquiries.sql`
-- [ ] T031 [P] Create `supabase/migrations/0015_gallery.sql` â€” `gallery_categories` and `gallery_images` with `room_type_id` nullable and **two position columns**, `gallery_position` and `room_position` (FR-041c)
-- [ ] T032 [P] Create `supabase/migrations/0016_content_pages.sql` with `page_kind`, `menu_position`, `menu_label`, `body_markdown`
-- [ ] T033 Create `supabase/migrations/0017_page_sections.sql` with `unique (page, section_type)` and the **`availability_always_enabled` check constraint** (FR-050c, FR-033b) â€” enforced in the database, not by hiding a toggle
-- [ ] T034 [P] Create `supabase/migrations/0018_infrastructure.sql` â€” `rate_limit_events` and `webhook_events`
-- [ ] T035 **Create `supabase/migrations/0019_personal_data_stores.sql`** â€” the register table plus its three seed rows for `bookings`, `email_deliveries`, and `enquiries` (FR-026a)
+- [X] T030 [P] Create `supabase/migrations/0014_enquiries.sql`
+- [X] T031 [P] Create `supabase/migrations/0015_gallery.sql` â€” `gallery_categories` and `gallery_images` with `room_type_id` nullable and **two position columns**, `gallery_position` and `room_position` (FR-041c)
+- [X] T032 [P] Create `supabase/migrations/0016_content_pages.sql` with `page_kind`, `menu_position`, `menu_label`, `body_markdown`
+- [X] T033 Create `supabase/migrations/0017_page_sections.sql` with `unique (page, section_type)` and the **`availability_always_enabled` check constraint** (FR-050c, FR-033b) â€” enforced in the database, not by hiding a toggle
+- [X] T034 [P] Create `supabase/migrations/0018_infrastructure.sql` â€” `rate_limit_events` and `webhook_events`
+- [X] T035 **Create `supabase/migrations/0019_personal_data_stores.sql`** â€” the register table plus its three seed rows for `bookings`, `email_deliveries`, and `enquiries` (FR-026a)
 
 ### Row Level Security
 
-- [ ] T036 Create `supabase/migrations/0020_rls_enable.sql` â€” `enable row level security` **and** `force row level security` on all 19 tables, plus `revoke all` from `anon` and `authenticated`
-- [ ] T037 Create `supabase/migrations/0021_rls_public_read.sql` â€” P1 policies for `room_types`, `rate_overrides`, `gallery_categories`, `gallery_images`, `content_pages` (with the `page_kind <> 'policy'` delete guard)
-- [ ] T038 Create `supabase/migrations/0022_rls_singletons.sql` â€” P1s for `site_settings` and `site_branding`, public select, **no client write policy**
-- [ ] T039 Create `supabase/migrations/0023_rls_server_only.sql` â€” P4 for `bookings`, `room_units`, `availability_blocks`, `room_occupancy`, `admin_users`, `personal_data_stores`, `rate_limit_events`, `webhook_events`. **No write policy for any client role on `bookings`**
-- [ ] T040 Create `supabase/migrations/0024_rls_audit.sql` â€” P7 append-only for `booking_events` and `email_deliveries`: select for admin, no insert, update, or delete for any client
-- [ ] T041 [P] Create `supabase/migrations/0025_rls_intake.sql` â€” P3 for `enquiries`: anon insert with a bounded `with check`, no anon read
-- [ ] T042 Create `supabase/migrations/0026_rls_page_sections.sql` â€” select for all, **update only** for admin, no insert or delete for any client (R14)
+- [X] T036 Create `supabase/migrations/0020_rls_enable.sql` â€” `enable row level security` **and** `force row level security` on all 19 tables, plus `revoke all` from `anon` and `authenticated`
+- [X] T037 Create `supabase/migrations/0021_rls_public_read.sql` â€” P1 policies for `room_types`, `rate_overrides`, `gallery_categories`, `gallery_images`, `content_pages` (with the `page_kind <> 'policy'` delete guard)
+- [X] T038 Create `supabase/migrations/0022_rls_singletons.sql` â€” P1s for `site_settings` and `site_branding`, public select, **no client write policy**
+- [X] T039 Create `supabase/migrations/0023_rls_server_only.sql` â€” P4 for `bookings`, `room_units`, `availability_blocks`, `room_occupancy`, `admin_users`, `personal_data_stores`, `rate_limit_events`, `webhook_events`. **No write policy for any client role on `bookings`**
+- [X] T040 Create `supabase/migrations/0024_rls_audit.sql` â€” P7 append-only for `booking_events` and `email_deliveries`: select for admin, no insert, update, or delete for any client
+- [X] T041 [P] Create `supabase/migrations/0025_rls_intake.sql` â€” P3 for `enquiries`: anon insert with a bounded `with check`, no anon read
+- [X] T042 Create `supabase/migrations/0026_rls_page_sections.sql` â€” select for all, **update only** for admin, no insert or delete for any client (R14)
 
 ### Server-side logic
 
-- [ ] T043 **Create `supabase/migrations/0027_write_booking.sql`** â€” the single `security definer` function owning every state transition and every date/room change. Derives `origin` from the caller, computes `stay_total` and `hold_expires_at` server-side, selects the room unit server-side, validates capacity against the stored row, writes a `booking_events` row for every action, and **requires the caller's `updated_at`, raising `stale_record` on mismatch** (R13)
-- [ ] T045 Create `supabase/migrations/0028_search_availability.sql` â€” returns availability never occupancy, prices night by night, enforces the minimum notice, and **gates `units_available` at `scarcity_threshold`, returning `null` above it** (FR-002c, R18)
-- [ ] T046 [P] Create `supabase/migrations/0029_guest_lookup.sql` â€” `get_booking_by_reference`, returning only the FR-013a field list, with failure indistinguishable between wrong reference and wrong email (FR-013b)
-- [ ] T047 [P] Create `supabase/migrations/0030_admin_rpcs.sql` â€” `upsert_rate_override`, `upsert_availability_block`, `set_page_section`, `save_content_page` with raw-HTML rejection (FR-045a), and **`save_site_settings` validating timezone as an IANA name, `same_day_cutoff_hour` 0â€“23, retention months > 0, and `scarcity_threshold >= 0`**. **Both upserts require the caller's `updated_at` and raise `stale_record` on mismatch** (R13)
-- [ ] T048 **Create `supabase/migrations/0031_privacy.sql`** â€” `erase_guest_data` and `export_guest_data`, both **iterating `personal_data_stores`** rather than naming tables, keyed on email address, requiring the identity attestation (FR-026b, FR-027, FR-028)
-- [ ] T049 [P] Create `supabase/migrations/0032_rate_limit.sql` â€” `check_rate_limit` storing a salted hash of the identifier, never a raw IP
-- [ ] T050 Create `supabase/migrations/0033_cron.sql` â€” four `pg_cron` jobs: hold expiry and awaiting expiry every 5 minutes, booking anonymisation and enquiry deletion daily (R4)
-- [ ] T050a **Create all three Storage buckets with their policies** â€” `public-media` (public read, admin write), `demo-assets` (public read, admin write), `payment-assets` (**private, admin write, no read policy for any role**). MIME allowlist **excludes SVG at the bucket**, where no client can bypass it. **Placed here because T051's seed and T054's imagery both reference stored objects** â€” position enforces the ordering rather than a note asking for it
+- [X] T043 **Create `supabase/migrations/0027_write_booking.sql`** â€” the single `security definer` function owning every state transition and every date/room change. Derives `origin` from the caller, computes `stay_total` and `hold_expires_at` server-side, selects the room unit server-side, validates capacity against the stored row, writes a `booking_events` row for every action, and **requires the caller's `updated_at`, raising `stale_record` on mismatch** (R13)
+- [X] T045 Create `supabase/migrations/0028_search_availability.sql` â€” returns availability never occupancy, prices night by night, enforces the minimum notice, and **gates `units_available` at `scarcity_threshold`, returning `null` above it** (FR-002c, R18)
+- [X] T046 [P] Create `supabase/migrations/0029_guest_lookup.sql` â€” `get_booking_by_reference`, returning only the FR-013a field list, with failure indistinguishable between wrong reference and wrong email (FR-013b)
+- [X] T047 [P] Create `supabase/migrations/0030_admin_rpcs.sql` â€” `upsert_rate_override`, `upsert_availability_block`, `set_page_section`, `save_content_page` with raw-HTML rejection (FR-045a), and **`save_site_settings` validating timezone as an IANA name, `same_day_cutoff_hour` 0â€“23, retention months > 0, and `scarcity_threshold >= 0`**. **Both upserts require the caller's `updated_at` and raise `stale_record` on mismatch** (R13)
+- [X] T048 **Create `supabase/migrations/0031_privacy.sql`** â€” `erase_guest_data` and `export_guest_data`, both **iterating `personal_data_stores`** rather than naming tables, keyed on email address, requiring the identity attestation (FR-026b, FR-027, FR-028)
+- [X] T049 [P] Create `supabase/migrations/0032_rate_limit.sql` â€” `check_rate_limit` storing a salted hash of the identifier, never a raw IP
+- [X] T050 Create `supabase/migrations/0033_cron.sql` â€” four `pg_cron` jobs: hold expiry and awaiting expiry every 5 minutes, booking anonymisation and enquiry deletion daily (R4)
+- [X] T050a **Create all three Storage buckets with their policies** â€” `public-media` (public read, admin write), `demo-assets` (public read, admin write), `payment-assets` (**private, admin write, no read policy for any role**). MIME allowlist **excludes SVG at the bucket**, where no client can bypass it. **Placed here because T051's seed and T054's imagery both reference stored objects** â€” position enforces the ordering rather than a note asking for it
 
 ### Seed
 
-- [ ] T051 Create `supabase/seed/seed.ts` producing the fictional demo property â€” 4â€“6 room types with different rates and capacities, realistic availability including booked dates, at least one seasonal rate override, **a booking in every state**, **and uploading the imagery from `demo-assets/` into the `demo-assets` bucket so the seeded gallery references objects that exist** (FR-070â€“FR-074)
-- [ ] T052 [P] Create `supabase/seed/teardown.ts` removing everything the seed created â€” **table rows and the objects it uploaded to the `demo-assets` bucket**. It MUST NOT delete the local `demo-assets/` directory, which holds the source files T054 supplies. Re-running seed after teardown must leave no orphaned objects (FR-075)
-- [ ] T053 [P] Add `pnpm seed` and `pnpm seed:teardown` to `package.json`, both re-runnable against a fresh database (FR-075)
+- [X] T051 Create `supabase/seed/seed.ts` producing the fictional demo property â€” 4â€“6 room types with different rates and capacities, realistic availability including booked dates, at least one seasonal rate override, **a booking in every state**, **and uploading the imagery from `demo-assets/` into the `demo-assets` bucket so the seeded gallery references objects that exist** (FR-070â€“FR-074)
+- [X] T052 [P] Create `supabase/seed/teardown.ts` removing everything the seed created â€” **table rows and the objects it uploaded to the `demo-assets` bucket**. It MUST NOT delete the local `demo-assets/` directory, which holds the source files T054 supplies. Re-running seed after teardown must leave no orphaned objects (FR-075)
+- [X] T053 [P] Add `pnpm seed` and `pnpm seed:teardown` to `package.json`, both re-runnable against a fresh database (FR-075)
 - [ ] T054 Place AI-generated demo imagery in `demo-assets/` with a placeholder payment QR that is visibly non-functional (FR-074, FR-076). **These files must exist before `pnpm seed` is run** â€” T051 writes the uploader, this task supplies its input. Writing the uploader first is fine; only running it needs both
 
 ### Shared components
 
-- [ ] T055 [P] Create primitives in `src/components/primitives/` â€” `Button`, `IconButton`, `Link`, `Input`, `Textarea`, `Select`, `Stepper`, `Checkbox`, `Radio`, `Switch`, `FormField`, `FieldError`
-- [ ] T056 [P] Create layout components in `src/components/layout/` â€” `Container`, `Stack`, `Row`, `Section`, `PaneBand`, `PaneGrid`
-- [ ] T057 **Create `src/components/content/Image.tsx`** â€” AVIF/WebP/JPEG sources, `srcset`, lazy loading, blur-up placeholder, explicit dimensions, and **`alt` as a required prop with no default** (FR-068b)
-- [ ] T058 [P] Create `src/components/content/` â€” `Heading`, `Text`, `StatusBadge` rendering icon **and** text, `PriceTag` with tabular figures
-- [ ] T058a [P] Create `src/components/content/Card.tsx` and `src/components/booking/BookingSummary.tsx` â€” the generic surface `RoomCard` builds on, and the panel showing what a guest is reserving
-- [ ] T059 **Create `src/components/content/Prose.tsx`** taking a `markdown` prop and rendering with `react-markdown` **without `rehype-raw`** â€” no `dangerouslySetInnerHTML` anywhere in the render path (C7)
-- [ ] T059a **Create `src/components/content/MarkdownEditor.tsx`** â€” a toolbar for headings, bold, italic, lists, and links so the owner never types syntax (FR-045), emitting Markdown. Rejects pasted raw HTML as a first line of defence; **the server rejection is the actual gate** (FR-045a). Used by both the content editor and the settings screen â€” this is the shared component, not a per-route toolbar
-- [ ] T060 [P] Create feedback components in `src/components/feedback/` â€” `Skeleton`, `Spinner`, `EmptyState`, `ErrorState`, `InlineAlert`, `Toast`, `RateLimitNotice`, `LockoutNotice`, and **`ConfirmDialog` naming what is about to happen in plain words, focus trapped, Escape to close** (FR-067a)
-- [ ] T060a [P] Create `src/components/admin/FormPanel.tsx` and `FilterBar.tsx` â€” the create/edit wrapper and filter row every admin route shares
-- [ ] T061 Create `src/brand/applyBranding.ts` using **`setElementVars`** from `@vanilla-extract/dynamic` â€” **never `assignInlineVars`**, which emits a `style` attribute that `style-src 'self'` blocks silently
-- [ ] T062 [P] Create `src/lib/supabase.ts` and `src/lib/schemas/` with the shared Zod schemas
-- [ ] T063 Create `src/components/admin/AdminShell.tsx` â€” **sidebar navigation across all eleven admin routes**, header, and content area, with sign-in, idle timeout warning, and session end (FR-069dâ€“f). The design system defines the `nav` prop; **this task supplies it**, or the eleven routes cannot be reached from one another
-- [ ] T063a Create `src/routes/admin/reset-password.tsx` wiring Supabase's reset flow â€” email enumeration protection on, **exact redirect URL allowlist with no wildcards**, short single-use token (FR-069h). With one account and no second admin, this is the only recovery path FR-069g leaves
-- [ ] T063b [P] Create `src/components/layout/SiteHeader.tsx`, `SiteFooter.tsx`, and `MobileNav.tsx` â€” structural destinations (FR-051), footer carrying all three policies, drawer with focus trap below 768px. **Header transparency is derived from whether an inverse logo exists, never passed as a prop** (design-system Â§3.5)
-- [ ] T063c Create `src/routes/guest/_layout.tsx` composing the shell around every guest route
-- [ ] T063d Create `src/routes/guest/not-found.tsx` and `src/routes/admin/not-found.tsx` â€” the guest one for unpublished or deleted pages (FR-047, FR-049b), the admin one **revealing nothing about whether a resource exists** (FR-069c)
+- [X] T055 [P] Create primitives in `src/components/primitives/` â€” `Button`, `IconButton`, `Link`, `Input`, `Textarea`, `Select`, `Stepper`, `Checkbox`, `Radio`, `Switch`, `FormField`, `FieldError`
+- [X] T056 [P] Create layout components in `src/components/layout/` â€” `Container`, `Stack`, `Row`, `Section`, `PaneBand`, `PaneGrid`
+- [X] T057 **Create `src/components/content/Image.tsx`** â€” AVIF/WebP/JPEG sources, `srcset`, lazy loading, blur-up placeholder, explicit dimensions, and **`alt` as a required prop with no default** (FR-068b)
+- [X] T058 [P] Create `src/components/content/` â€” `Heading`, `Text`, `StatusBadge` rendering icon **and** text, `PriceTag` with tabular figures
+- [X] T058a [P] Create `src/components/content/Card.tsx` and `src/components/booking/BookingSummary.tsx` â€” the generic surface `RoomCard` builds on, and the panel showing what a guest is reserving
+- [X] T059 **Create `src/components/content/Prose.tsx`** taking a `markdown` prop and rendering with `react-markdown` **without `rehype-raw`** â€” no `dangerouslySetInnerHTML` anywhere in the render path (C7)
+- [X] T059a **Create `src/components/content/MarkdownEditor.tsx`** â€” a toolbar for headings, bold, italic, lists, and links so the owner never types syntax (FR-045), emitting Markdown. Rejects pasted raw HTML as a first line of defence; **the server rejection is the actual gate** (FR-045a). Used by both the content editor and the settings screen â€” this is the shared component, not a per-route toolbar
+- [X] T060 [P] Create feedback components in `src/components/feedback/` â€” `Skeleton`, `Spinner`, `EmptyState`, `ErrorState`, `InlineAlert`, `Toast`, `RateLimitNotice`, `LockoutNotice`, and **`ConfirmDialog` naming what is about to happen in plain words, focus trapped, Escape to close** (FR-067a)
+- [X] T060a [P] Create `src/components/admin/FormPanel.tsx` and `FilterBar.tsx` â€” the create/edit wrapper and filter row every admin route shares
+- [X] T061 Create `src/brand/applyBranding.ts` using **`setElementVars`** from `@vanilla-extract/dynamic` â€” **never `assignInlineVars`**, which emits a `style` attribute that `style-src 'self'` blocks silently
+- [X] T062 [P] Create `src/lib/supabase.ts` and `src/lib/schemas/` with the shared Zod schemas
+- [X] T063 Create `src/components/admin/AdminShell.tsx` â€” **sidebar navigation across all eleven admin routes**, header, and content area, with sign-in, idle timeout warning, and session end (FR-069dâ€“f). The design system defines the `nav` prop; **this task supplies it**, or the eleven routes cannot be reached from one another
+- [X] T063a Create `src/routes/admin/reset-password.tsx` wiring Supabase's reset flow â€” email enumeration protection on, **exact redirect URL allowlist with no wildcards**, short single-use token (FR-069h). With one account and no second admin, this is the only recovery path FR-069g leaves
+- [X] T063b [P] Create `src/components/layout/SiteHeader.tsx`, `SiteFooter.tsx`, and `MobileNav.tsx` â€” structural destinations (FR-051), footer carrying all three policies, drawer with focus trap below 768px. **Header transparency is derived from whether an inverse logo exists, never passed as a prop** (design-system Â§3.5)
+- [X] T063c Create `src/routes/guest/_layout.tsx` composing the shell around every guest route
+- [X] T063d Create `src/routes/guest/not-found.tsx` and `src/routes/admin/not-found.tsx` â€” the guest one for unpublished or deleted pages (FR-047, FR-049b), the admin one **revealing nothing about whether a resource exists** (FR-069c)
 
 ### Required verification suites
 
-- [ ] T064 **Create `tests/concurrency/occupancy.test.ts`** â€” 200 simultaneous claims on one unit and identical dates, asserting exactly one succeeds. Parameterised over the writer set so US4 and US6 extend it rather than replacing it
-- [ ] T065 [P] Create `tests/rls/anon-access.test.ts` asserting an anon key selecting from `bookings`, `availability_blocks`, and `room_occupancy` returns **zero rows rather than an error**
-- [ ] T066 [P] Create `tests/register/coverage.test.ts` asserting every column documented as personal data appears in `personal_data_stores` â€” **a new store that skips the register must fail here** (R16)
-- [ ] T067 [P] Create `tests/rls/schema-audit.test.ts` running the Â§1.5 audit query and asserting an empty result
+- [X] T064 **Create `tests/concurrency/occupancy.test.ts`** â€” 200 simultaneous claims on one unit and identical dates, asserting exactly one succeeds. Parameterised over the writer set so US4 and US6 extend it rather than replacing it
+- [X] T065 [P] Create `tests/rls/anon-access.test.ts` asserting an anon key selecting from `bookings`, `availability_blocks`, and `room_occupancy` **yields no rows** — refused at the grant gate (`42501`) or emptied by the RLS gate, both acceptable, a row is not. **Amended from “zero rows rather than an error”**: grants are revoked per baseline §1.1, so the refusal happens at the privilege layer. See the header of the test file
+- [X] T066 [P] Create `tests/register/coverage.test.ts` asserting every column documented as personal data appears in `personal_data_stores` â€” **a new store that skips the register must fail here** (R16)
+- [X] T067 [P] Create `tests/rls/schema-audit.test.ts` running the Â§1.5 audit query and asserting an empty result
 
 **Checkpoint** â€” do not proceed past a failure here:
 `pnpm build` clean Â· **V1** (concurrency) Â· **V1b** (stale writes) Â· **V3** (guests receive no
@@ -327,7 +327,7 @@ occupied dates and watch it refuse, then remove it.
 **Independent Test**: Upload an image with a description into a category, see it in the guest gallery,
 reorder it, attach one to a room type and see it in both places from one upload, then delete it.
 
-- [ ] T133 [US7] Confirm the bucket allowlist and size limits created in T050a actually reject an SVG, an oversized file, and a renamed non-image â€” bucket configuration is the enforcement, so it is worth proving rather than assuming
+- [ ] T133 [US7] Confirm the bucket allowlist and size limits created in T050a actually reject an SVG, an oversized file, and a renamed non-image â€” bucket configuration is PART of the enforcement, so it is worth proving rather than assuming. **Probed 2026-08-01: the bucket rejects an honestly-declared SVG but ACCEPTS SVG bytes sent as `Content-Type: image/jpeg`** — `allowed_mime_types` tests the declared header, not the bytes. The renamed-non-image assertion therefore CANNOT pass on bucket configuration alone; it needs the magic-byte check and server-side re-encode that security-baseline.md §5.2 already requires and that nothing implements yet. Build that with `ImageUploader` before writing this test
 - [ ] T134 [US7] Create `src/lib/images/process.ts` â€” client-side resize and re-encode, stripping EXIF and generating responsive derivatives (R6)
 - [ ] T135 [US7] Create `src/components/admin/ImageUploader.tsx` with magic-byte validation and **alt text required before save** (FR-040)
 - [ ] T136 [US7] Create `src/routes/admin/gallery/index.tsx` with category management â€” add, rename, reorder, and delete once empty **via `ConfirmDialog`** (FR-041a, FR-067a)
